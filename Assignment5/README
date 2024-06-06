@@ -1,0 +1,35 @@
+Casey Owen, cowen03
+CS131
+Assignment 5
+A Radar Trace Classifier
+
+1. You are to solve this problem by
+classifying radar tracks into two classes: birds and airplanes. Using a Naïve Recursive Bayesian classifier, your
+job is to calculate and report the probability that the object belongs to one of the two classes for each data
+point provided.
+
+
+Answer : To do this, I created a Classifier Class that loads the data and implements the Naive Recursive Baysian classifying method, primarily through two functions, "classify" and "recursiveEstimation", which are the wrapper function and recursive function respectively. 
+
+Assumptions made when classifying:
+I used the given velocity likelihood distributions.
+
+Initial class probability priors are equal, 0.5 each. This assumes there is no reason to think either birds or planes are more common in the environment that is being monitored.
+
+Transition probabilities are 0.9 each. This assumes that a class change to be another class at the next time step with probability of only 0.1. Naturally, in real life this would be impossible, birds do not become planes and planes do not become birds with 100% probability, however the algorithm needs some small value to allow for it to update its previous guess, aka "change its mind." For example, if at timestep 5 the algorithm estimates that the object is a plane, it should be able to change its mind on timestep 6, depending on the new evidence.
+
+New Feature:
+After evaluating the data to identify interesting features, I noticed that birds have a much higher variance in their velocity, typically, which could also be described as a higher acceleration magnitude. In order to improve the classification over using just velocity, I attempted to encode this into a feature. To do this, I took the difference of each velocity and the previous timestep's velocity to be the acceleration at that timestep. I then seperately histogramed all birds accelerations, and all planes accelerations, and used the results to generate likelihood distributions of the two, assuming that each one had normally distributed accelerations. 
+
+These can be seen in the accel_likelihoods figures that were generated. It is clear that both are approximately, but not exactly normally distributed. There may be a more accurate distribution to use to get better results, but my main intent was just to get a rough idea of how likely each acceleration was for each class. 
+
+Then, when calculating the overall likelihood of an objects class based on a velocity and acceleration in a point in time, I assume that velocity and acceleration are conditionally independent of each other, conditioned on the true class, so that they can be multiplied together to get the joint probability. This may not be completely true, since acceleration is clearly derived from velocity, but they do represent two seperate properties of the data to at least some extent and carry their own information.
+
+Results:
+I ran the classification twice, once with feature engineering (considering acceleration as a feature) and once without. Plots are shown in the figures/results folder. It is clear that the feature engineering helped - accuracy on training data rose from 75% to 95%. However, the accuracy was still not 100% - it misclassified example #8. Example 8 is a bird with a middling speed for a bird (around the same as a slow airplane), but fairly low variance in speed, around in line with an airplane. So it is not unreasonable for the algorithm to classify it this way - to improve, more information than just velocity is likely necessary.
+
+Test results were then also generated in the same way, using feature engineering. Since the test result classifications are given, we know the algorithm classifies 90% of the samples correctly, not dissimilar to the training data.
+
+Requirements to run:
+-Ensure the "pathlib", "matplotlib", "numpy", "pandas" and "scipy" libraries are installed
+-Run main.py

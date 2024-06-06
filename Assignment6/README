@@ -1,0 +1,41 @@
+Casey Owen, cowen03
+CS131
+Assignment 6
+Gardens of Heaven
+
+1. Your job is to help the gardener to classify all the pots with the help of a multi-layer neural network. Your program will have two functionalities: train the ANN and classify the plants based on user input. During classification, the gardener will be asked to provide all the necessary information and respond with a predicted class of Iris.
+
+
+Answer: To do this, I created a neural network from scratch, in an OOP style using classes of Neuron, Layer and NeuralNetwork. They are capable of being trained, and update their weights using backpropogation on each datapoint given to them.
+
+I also created a NNClassifier Class that, when given a dataframe of data, performs data processing, splitting into train/validation/test data, doing grid search hyperparameter tuning, and classifying input data using a given NeuralNetwork object.
+
+Finally, main.py loads the data from txt into a dataframe, calls the NNClassifier class on it and performs a grid search, and contains a user input program that allows the gardener to provide plant data and receive a class returned.
+
+It also saves a figure of the model training progress by iteration for the best model, saved as a png
+
+Note: For ease of grading, I also provided a specific set of hyperparameters that generally performs well, so if training is taking too long (it takes about 2-3 minutes of my PC), you can switch to this set. 
+
+Assumptions:
+Models are trained with a maximum of 100 iterations, with ability to stop early if the validation error does not decrease for 25 consecutive iterations.
+
+Train/Validation/Test data is split into 60/20/20 percent of the total, respectively. They are evenly split by class, so that each created subset has matching proportions of each class. When first loaded, all of the data is shuffled so this split is not based on the provided order. Then, during training, the training data is shuffled again on each iteration.
+
+The classifier uses one-hot encoding to encode the three classes, so there are 3 output neurons.
+
+All 4 features are used as input to the neural network, with only minmaxscaling being applied to them as pre-processing, so there are 4 input neurons - there is no feature engineering, but the model tends to still give good results
+
+Weights are updated after every datapoint is provided, so it uses a version of stochastic gradient descent. An "iteration" is considered to be when the network sees the entire training dataset and updates on each point - it sees this entire set up to 100 times.
+
+The mean square error and accuracy is calculated as well - the best model is chosen to be the one with the lowest validation MSE. This is preferred over accuracy given the relatively small dataset sizes, since it gives credit for "near-misses" when classifying, which accuracydoes not.
+
+All hyperparameter sets include at least one hidden layer, since this is necessary to differentiate between the classes that are not linearly seperable.
+
+Results:
+The hyperparameter tuning shows that the model is very sensitive to specific sets of hyperparameters. Approximately half of all models trained tend to do no better than random noise, and often, the best model is only one small hyperparameter difference away from a very poor performing one. Trying a wider variety of learning rates, or using a version of mini-batch or batch gradient descent may be helpful here.
+
+However, the top end models tend to perform very well, always greater than 90% accuracy, and sometimes at 29/30 or 30/30 on the validation and test sets.
+
+Requirements to run:
+-Ensure the "sklearn", "matplotlib", "numpy", "pandas" and "copy" libraries are installed
+-Run main.py

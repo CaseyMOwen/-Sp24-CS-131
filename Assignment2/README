@@ -1,0 +1,28 @@
+Casey Owen, cowen03
+CS131
+Assignment 2
+The Pancake Problem
+
+1. Define the problem as a searching problem
+Answer : To do this, I created a SearchNode Class that represents a node in the search tree for the problem, and a possible state of the pancake stack (of which there are many possible nodes for a single stack configuration). The children of the node are all possible states that can be reached from the state of the node, and it contains information about costs, and what action (how many pancakes were flipped) was taken to transition from the parent to the node.
+
+2. Define a possible cost function (backward cost)
+Answer: I chose the "number of flips" as the cost function for this problem in both A* and UCS, since it seemed like a logical thing to optimize. You do not want a solution that contains redundant steps - for example, one that solves the problems then flips 5 pancakes twice. This is also a solution techincally, but takes longer than nevessary. Another possible thing that may work as a cost would be the total number of pancakes flipped, although this would require a different heuristic than the one I chose and I suspect that it would result in many of the same solutions.
+
+One nice property of choosing number of flips as the cost function, is that it is strictly positive so both UCS and A* must be complete.
+
+3. Define a possible heursitic function (forward cost)
+Answer: For this one I chose the hap heurstic, as shown in the linked paper (Helmert). I chose this because I was convinced of its efficiency by the argument in the paper, plus it is easy to see how it is admissable and consistent. 
+
+As said in the paper, we know it is admissable because "a k-flip can reduce the number of gaps by at most 1: the only gap it can potentially “heal” is the one between positions k and k + 1" Since a flip can only heal at most one gap, then the number of flips to a solution must be greater than or equal to the number of gaps, hence it is admissable.  By the same reasoning, since a flip cannot heal two gaps, it must also be consistent.
+
+Therefore, since the heurstic is both admissable and consistent, A* is optimal.
+
+For UCS, there is of course no heuristic, and I simply set it to be 0 when solving in that mode
+
+
+4. Implement an algorithm in Python that can behave as A* and UCS as the user requests.
+Answer: This is done in the attached .py files. To run:
+
+-Ensure the "random" "heapq" and "copy" libraries are installed
+-Run main.py
