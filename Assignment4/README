@@ -1,0 +1,21 @@
+Casey Owen, cowen03
+CS131
+Assignment 4
+A Sudoku Solver
+
+1. Write a Sudoku puzzle solver using a Constraint Satisfaction Problems approach that can calculate the solution
+for the easy puzzle.
+Answer : To do this, I created a Solver Class that contains Constraint Satisfaction Problems methods to find the solution. It uses the recursive backtracking search presented in class to recursively check new values for each cell, or "variable". I implemented a few of the most common CSP improvements to increase the algorithm performance - forward checking/filtering, variable ordering, and value ordering. 
+
+Forward Checking is implemented by keeping track of the domains of all cells in the puzzle, which by defauly contain a domain of the values 1-9. Then, whenever a value is assigned within the puzzle, all variables that are neighbors (in same column, row, or block) to the assigned variable have their domains updated accordingly (they can no longer include that value.)
+
+Variable ordering is implemented using the MRV (minimum remaining  values) heurstic. When selecting an unassigned variable for use in the recursive backtracking algorithm, domain sizes of all cells are checked, and the cell with the smallest remaining domain is used.
+
+Value ordering is implemented with the LCV (least constraining value) heursitic. When the domain of a selected variable is used in the recursive backtracking algorithm, it is first ordered by LCV. For each possible assignment in the domain, the algorithm checks the how many domains would be reduced by that assignement, and sorts the domain such that the assignments that rule out the fewest choices in other domains are pushed to the front of the list
+
+Additional improvements and pruning strategies are of course possible, including maintaining arc consistency, and smart backtracking, which could include conflict-directed backjumping. I found that with only the 3 improvements I listed above, even hard problems were very tractable on a 9x9 grid, and able to be solved in fractions of a second. If there was desire to scale this algorithm to arbitrarily large sudoku problems greater than 9x9, further improvements would almost certainly be necessary.
+
+
+Requirements to run:
+-Ensure the "csv", "copy", "numpy", "time" and "math" libraries are installed
+-Run main.py
