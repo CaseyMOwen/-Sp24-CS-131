@@ -84,7 +84,7 @@ Libraries required:
 - pandas
 - scipy
 
-### Assignment 6
+## Assignment 6
 
 Independently created an **Artificial Neural Network** from scratch to classify Iris plants. The assignment provides data from the well-known Fisher's Iris database, which includes 50 instances each of 3 classes of Iris plant, along with 4 attributes for each instance.
 
